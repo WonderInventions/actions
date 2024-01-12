@@ -8,20 +8,5 @@ inputs:
   text:
     required: true
 runs:
-  using: composite
-  steps:
-    - run: |
-        text=$(echo -n "${{ inputs.text }}" | sed ':a;N;$!ba;s/\n/\\n\\n/g')
-        data="{
-          \"chat\": \"${{ inputs.chat-id }}\",
-          \"text\": \"${text}\"
-        }"
-
-        curl \
-          -X POST \
-          --fail \
-          --header "Authorization: Bearer ${{ inputs.api-key }}" \
-          --header "Content-Type: application/json" \
-          --data-raw "${data}" \
-          https://api.ro.am/v0/chat.post
-      shell: bash
+  using: node20
+  main: index.mjs

@@ -1,6 +1,6 @@
-const core = require("@actions/core");
+import core from "@actions/core";
 
-const postMessage = async () => {
+try {
   const apiKey = core.getInput("api-key");
   const chatId = core.getInput("chat-id");
   const text = core.getInput("text");
@@ -23,8 +23,6 @@ const postMessage = async () => {
 
   const responseData = await response.json();
   console.log("Response:", responseData);
-};
-
-postMessage().catch((error) => {
+} catch (error) {
   core.setFailed(error.message);
-});
+}

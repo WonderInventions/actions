@@ -11,7 +11,7 @@ runs:
   using: composite
   steps:
     - run: |
-        text=$(echo -n "${{ inputs.text }}" | sed ':a;N;$!ba;s/\n/\\n\\n/g')
+        text=$(echo -n "${{ inputs.text }}" | awk '{ printf "%s\\n", $0 }')
         data="{
           \"chat\": \"${{ inputs.chat-id }}\",
           \"text\": \"${text}\"

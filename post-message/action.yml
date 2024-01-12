@@ -8,23 +8,5 @@ inputs:
   text:
     required: true
 runs:
-  using: composite
-  steps:
-    - run: |
-        text=$(echo -n "${{ inputs.text }}" | awk '{ printf "%s\\n", $0 }')
-        data="{
-          \"chat\": \"${{ inputs.chat-id }}\",
-          \"text\": \"${text}\"
-        }"
-
-        echo "${data}"
-
-        curl \
-          -X POST \
-          --fail \
-          --header "Authorization: Bearer ${{ inputs.api-key }}" \
-          --header "Content-Type: application/json" \
-          --data-raw "${data}" \
-          --verbose \
-          https://api.ro.am/v0/chat.post
-      shell: bash
+  using: node20
+  main: index.js

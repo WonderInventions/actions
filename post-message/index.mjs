@@ -4,10 +4,22 @@ try {
   const apiKey = core.getInput("api-key");
   const chatId = core.getInput("chat-id");
   const text = core.getInput("text");
+  const jobStatus = core.getInput("job-status");
+
+  const color = jobStatus === "success" ? "good" : "danger"; //
 
   const body = JSON.stringify({
     chat: chatId,
-    text,
+    color: color,
+    blocks: [
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: text
+        }
+      }
+    ]
   });
 
   const response = await fetch("https://api.ro.am/v0/chat.post", {
@@ -21,11 +33,9 @@ try {
 
   if (!response.ok) {
     const errorBody = await response.text();
-
     core.error(`API request failed`);
     core.error(`Status: ${response.status} ${response.statusText}`);
     core.error(`Response body: ${errorBody}`);
-
     throw new Error(`HTTP ${response.status}`);
   }
 

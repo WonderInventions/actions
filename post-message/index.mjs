@@ -4,17 +4,15 @@ try {
   const apiKey = core.getInput("api-key");
   const chatId = core.getInput("chat-id");
   const color = core.getInput("colour");
-  const blocksInput = core.getInput("blocks");
+  const blocks = core.getInput("blocks");
 
-  console.log(blocksInput);
-
-  const blocks = JSON.parse(blocksInput);
+  console.log(blocks);
 
   const body = JSON.stringify({
-      chat: chatId,
-      color,
-      blocks
-    });
+    chat: chatId,
+    color,
+    blocks: JSON.parse(blocks)
+  });
 
   const response = await fetch("https://api.ro.am/v0/chat.post", {
     method: "POST",

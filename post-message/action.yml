@@ -7,6 +7,8 @@ inputs:
     required: true
   text:
     required: true
+  link:
+    required: true
 runs:
   using: node20
   main: index.mjs

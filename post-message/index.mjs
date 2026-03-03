@@ -4,6 +4,7 @@ try {
   const apiKey = core.getInput("api-key");
   const chatId = core.getInput("chat-id");
   const text = core.getInput("text");
+  const link = core.getInput("link");
   const jobStatus = core.getInput("job-status");
 
   const color = jobStatus === "success" ? "good" : "danger"; //
@@ -18,7 +19,15 @@ try {
           type: "mrkdwn",
           text: text
         }
+      },
+    { "type": "divider" },
+    {
+      type: "context",
+      elements: {
+        type: "mrkdwn",
+        text: link
       }
+    }
     ]
   });
 

@@ -6,6 +6,8 @@ try {
   const color = core.getInput("colour");
   const blocksInput = core.getInput("blocks");
 
+  console.log(blocksInput);
+
   const blocks = JSON.parse(blocksInput);
 
   const body = JSON.stringify({

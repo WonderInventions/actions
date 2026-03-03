@@ -3,16 +3,25 @@ import core from "@actions/core";
 try {
   const apiKey = core.getInput("api-key");
   const chatId = core.getInput("chat-id");
-  const text = core.getInput("text");
-  const link = core.getInput("link");
+  const payloadInput = core.getInput("payload");
   const jobStatus = core.getInput("job-status");
 
-  const color = jobStatus === "success" ? "good" : "danger"; //
+  let payload = JSON.parse(payloadInput);
+  const { title, text, link } = payload;
+
+  const color = jobStatus ? (jobStatus === "success" ? "good" : "danger") : "warning";
 
   const body = JSON.stringify({
     chat: chatId,
     color: color,
     blocks: [
+      {
+        type: "header",
+        text: {
+          type: "mrkdwn",
+          text: title
+        }
+      },
       {
         type: "section",
         text: {
@@ -20,14 +29,16 @@ try {
           text: text
         }
       },
-    { "type": "divider" },
-    {
-      type: "context",
-      elements: {
-        type: "mrkdwn",
-        text: link
+      { type: "divider" },
+      {
+        type: "context",
+        elements: [
+          {
+            type: "mrkdwn",
+            text: link
+          }
+        ]
       }
-    }
     ]
   });
 

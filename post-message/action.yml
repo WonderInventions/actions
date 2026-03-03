@@ -3,12 +3,16 @@ name: Post Chat Message
 inputs:
   api-key:
     required: true
+    description: api key to authenticate to ROAM api
   chat-id:
     required: true
-  text:
+    description: id of the chat to post the message to
+  payload:
     required: true
-  link:
-    required: true
+    description: contents of the message JSON object {title - string, text - string, link - string}
+  job-status:
+    required: false
+    description: status of the job that triggered the message
 runs:
   using: node20
   main: index.mjs

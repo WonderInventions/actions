@@ -3,16 +3,16 @@ name: Post Chat Message
 inputs:
   api-key:
     required: true
-    description: api key to authenticate to ROAM api
+    description: API key to authenticate with the Roam API
   chat-id:
     required: true
-    description: id of the chat to post the message to
-  payload:
+    description: Chat ID of the Roam group the message will be sent to
+  blocks:
     required: true
-    description: contents of the message JSON object {title - string, text - string, link - string}
-  job-status:
-    required: false
-    description: status of the job that triggered the message
+    description: Blocks Array of the message contents
+  colour:
+    required: true
+    description: Colour of the Roam notification banner
 runs:
   using: node20
   main: index.mjs

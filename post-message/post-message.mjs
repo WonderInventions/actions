@@ -32,7 +32,7 @@ export function parseV1DestinationFromChatId(chatId) {
   const match = TAGGED_ID_PATTERN.exec(trimmed);
   if (!match) {
     throw new Error(
-      `Unsupported chat-id for block mode: ${trimmed}. Expected a UUID or tagged ID.`
+      `Unsupported chat-id: ${trimmed}. Expected a UUID or tagged ID.`
     );
   }
 
@@ -51,15 +51,14 @@ export function parseV1DestinationFromChatId(chatId) {
     case "B":
       return { field: "userIds", value: [id] };
     default:
-      throw new Error(
-        `Unsupported chat-id tag for block mode: ${tag}.`
-      );
+      throw new Error(`Unsupported chat-id tag: ${tag}.`);
   }
 }
 
-export function buildV0PayloadObject({ chatId, text }) {
+export function buildV1TextPayloadObject({ chatId, text }) {
+  const destination = parseV1DestinationFromChatId(chatId);
   return {
-    chat: chatId,
+    [destination.field]: destination.value,
     text,
   };
 }
@@ -78,11 +77,8 @@ export function buildV1PayloadString({ chatId, blocks, color }) {
   return `{${fragments.join(",")}}`;
 }
 
-export function resolveEndpoint(mode) {
-  if (mode === "blocks") {
-    return "https://api.ro.am/v1/chat.post";
-  }
-  return "https://api.ro.am/v0/chat.post";
+export function resolveEndpoint() {
+  return "https://api.ro.am/v1/chat.post";
 }
 
 export function buildRequest({ apiKey, chatId, text, blocks, color }) {
@@ -92,11 +88,11 @@ export function buildRequest({ apiKey, chatId, text, blocks, color }) {
     throw new Error("color is only supported when sending blocks.");
   }
 
-  const url = resolveEndpoint(mode);
+  const url = resolveEndpoint();
   const body =
     mode === "blocks"
       ? buildV1PayloadString({ chatId, blocks, color })
-      : JSON.stringify(buildV0PayloadObject({ chatId, text }));
+      : JSON.stringify(buildV1TextPayloadObject({ chatId, text }));
 
   return {
     mode,

@@ -3,10 +3,19 @@ name: Post Chat Message
 inputs:
   api-key:
     required: true
+    description: Bearer token for the Roam API.
   chat-id:
     required: true
+    description: Tagged destination identifier.
   text:
-    required: true
+    required: false
+    description: Text message content. Mutually exclusive with blocks.
+  blocks:
+    required: false
+    description: Raw JSON for the blocks field. The action forwards this value without parsing.
+  color:
+    required: false
+    description: Optional block message color. Only used when blocks is provided.
 runs:
   using: node24
   main: index.mjs

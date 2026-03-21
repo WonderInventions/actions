@@ -3,6 +3,9 @@
   "version": "2.0.0",
   "private": true,
   "description": "Roam GitHub Actions",
+  "scripts": {
+    "test": "node --test"
+  },
   "dependencies": {
     "@actions/core": "^3.0.0"
   }

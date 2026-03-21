@@ -3,10 +3,19 @@ name: Post Chat Message
 inputs:
   api-key:
     required: true
+    description: Bearer token for the Roam API.
   chat-id:
     required: true
+    description: Existing destination identifier. Text mode sends it unchanged to v0; block mode maps it into the appropriate v1 destination field.
   text:
-    required: true
+    required: false
+    description: Text message content for backward-compatible v0 sends. Mutually exclusive with blocks.
+  blocks:
+    required: false
+    description: Raw JSON for the blocks field. When present, the action sends to v1/chat.post and forwards this value without parsing.
+  color:
+    required: false
+    description: Optional block message color. Only used when blocks is provided.
 runs:
   using: node24
   main: index.mjs

@@ -6,7 +6,7 @@ inputs:
     description: Bearer token for the Roam API.
   chat-id:
     required: true
-    description: Destination identifier.
+    description: Tagged destination identifier.
   text:
     required: false
     description: Text message content. Mutually exclusive with blocks.

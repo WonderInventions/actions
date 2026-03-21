@@ -1,7 +1,5 @@
 import * as core from "@actions/core";
 
-const UUID_PATTERN =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const TAGGED_ID_PATTERN =
   /^([A-Za-z])-([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/i;
 
@@ -25,14 +23,10 @@ function resolveMode({ text, blocks }) {
 
 function parseV1DestinationFromChatId(chatId) {
   const trimmed = chatId.trim();
-  if (UUID_PATTERN.test(trimmed)) {
-    return { field: "chatId", value: trimmed };
-  }
-
   const match = TAGGED_ID_PATTERN.exec(trimmed);
   if (!match) {
     throw new Error(
-      `Unsupported chat-id: ${trimmed}. Expected a UUID or tagged ID.`
+      `Unsupported chat-id: ${trimmed}. Expected a tagged ID.`
     );
   }
 

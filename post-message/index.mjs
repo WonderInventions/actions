@@ -1,4 +1,25 @@
 import * as core from "@actions/core";
+import { createRequire } from "node:module";
+
+// Version is read from package.json (single source of truth) so a release only
+// bumps it in one place. Guarded so a missing/garbled manifest can never break
+// posting — the User-Agent is best-effort attribution, not a hard dependency.
+let pluginVersion = "0+unknown";
+try {
+  pluginVersion =
+    createRequire(import.meta.url)("../package.json").version || pluginVersion;
+} catch {
+  // keep the fallback
+}
+
+// Advertised on every request so the appserver can attribute traffic to this
+// action and version (Datadog @plugin.name:roam-actions / @plugin.version).
+const USER_AGENT = `roam-actions/${pluginVersion}`;
+
+// The Roam API version this action is built and tested against, pinned via the
+// Roam-Version header so future /v1/ shape changes don't reach it until the
+// version is bumped in lockstep with the code.
+const ROAM_API_VERSION = "2026-06-01";
 
 const TAGGED_ID_PATTERN =
   /^([A-Za-z])-([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/i;
@@ -90,6 +111,8 @@ function buildRequest({ apiKey, chatId, text, blocks, color }) {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
+        "User-Agent": USER_AGENT,
+        "Roam-Version": ROAM_API_VERSION,
       },
       body,
     },

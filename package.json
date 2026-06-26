@@ -1,6 +1,6 @@
 {
   "name": "actions",
-  "version": "2.0.1",
+  "version": "4.0.2",
   "private": true,
   "description": "Roam GitHub Actions",
   "dependencies": {
